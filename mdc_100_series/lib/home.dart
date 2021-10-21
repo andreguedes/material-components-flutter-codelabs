@@ -13,11 +13,68 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'model/products_repository.dart';
+import 'model/product.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  // TODO: Make a collection of cards (102)
+  List<Card> _buildGridCards(BuildContext context) {
+    List<Product> products = ProductsRepository.loadProducts(Category.all);
+
+    if (products.isEmpty) {
+      return const <Card>[];
+    }
+
+    final ThemeData theme = Theme.of(context);
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
+
+    return products.map((product) {
+      return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 18 / 11,
+              child: Image.asset(
+                product.assetName,
+                package: product.assetPackage,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  16,
+                  12,
+                  16,
+                  8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(product.name,
+                        style: theme.textTheme.headline6, maxLines: 1),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      formatter.format(product.price),
+                      style: theme.textTheme.subtitle2,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
+  }
+
   // TODO: Add a variable for Category (104)
 
   @override
@@ -61,38 +118,7 @@ class HomePage extends StatelessWidget {
         crossAxisCount: 2,
         padding: const EdgeInsets.all(16),
         childAspectRatio: 8 / 9,
-        children: <Widget>[
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 18 / 11,
-                  child: Image.asset('assets/diamond.png'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    16,
-                    12,
-                    16,
-                    8,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text('Title'),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text('Secondary Text'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        children: _buildGridCards(context),
       ),
       resizeToAvoidBottomInset: false,
     );
