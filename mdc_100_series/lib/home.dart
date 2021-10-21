@@ -57,9 +57,42 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      // TODO: Add a grid view (102)
-      body: Center(
-        child: Text('You did it!'),
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(16),
+        childAspectRatio: 8 / 9,
+        children: <Widget>[
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 18 / 11,
+                  child: Image.asset('assets/diamond.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    16,
+                    12,
+                    16,
+                    8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const <Widget>[
+                      Text('Title'),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text('Secondary Text'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       resizeToAvoidBottomInset: false,
     );
