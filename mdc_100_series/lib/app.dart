@@ -17,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'home.dart';
 import 'login.dart';
+import 'backdrop.dart';
+import 'model/product.dart';
 import 'supplemental/cut_corners_border.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
@@ -27,11 +29,13 @@ class ShrineApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shrine',
-      // TODO: Change home: to a Backdrop with a HomePage frontLayer (104)
-      home: const HomePage(),
-      // TODO: Make currentCategory field take _currentCategory (104)
-      // TODO: Pass _currentCategory for frontLayer (104)
-      // TODO: Change backLayer field value to CategoryMenuPage (104)
+      home: Backdrop(
+        currentCategory: Category.all,
+        frontLayer: HomePage(),
+        backLayer: Container(color: kShrinePink100,),
+        frontTitle: Text('SHRINE'),
+        backTitle: Text('MENU'),
+      ),
       initialRoute: '/login',
       onGenerateRoute: _getRoute,
       theme: _kShrineTheme,
